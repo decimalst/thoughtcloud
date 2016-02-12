@@ -9,6 +9,7 @@ var server = http.createServer(function(req, resp){
   // logic to handle different endpoints differently
 
   // print the req object so we can see the information we have access to
+  // this is basically just for development
   console.log(req);
 
   // make an example object. Something like this could come from mongodb
@@ -21,6 +22,27 @@ var server = http.createServer(function(req, resp){
   // json is a string representation of javascript objects.
   // JSON is JavaScript Object Notation
   resp.end(JSON.stringify(myObj));
+  /*
+  So thinking of the terminology, CRUD, we'll need at least 4 endpoints per operation
+  One for each operation. We'll also need to define our data.
+  Will we have accounts, or is it totally anon?
+
+  we'll have to think about tags, should we just define a small set of tags,
+  or should users be able to define their own?
+
+  here's an example of an api
+  CREATE: POST -> /api/content/post
+    request content:
+      {
+        name: "anonID",
+        tags: [gay, comedy, space],
+        content: "Long format text with tons of stuff, probably doesn't need line breaks"
+      }
+      // note: on this endpoint we'll just write it into the DB
+  READ: GET -> /api/content/{unique post ID}
+  UPDATE: UPDATE -> /api/content/{unique post ID}/update
+  DELETE: DELETE -> /api/content/{unique post ID}/delete
+  */
 });
 
 
