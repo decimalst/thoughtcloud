@@ -1,0 +1,22 @@
+{
+  "name": "thoughtcloud",
+  "version": "1.0.0",
+  "description": "Node based app that gives you thoughts",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decimalst/thoughtcloud.git"
+  },
+  "author": "decimalst",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/decimalst/thoughtcloud/issues"
+  },
+  "homepage": "https://github.com/decimalst/thoughtcloud#readme",
+  "dependencies": {
+    "mongoose": "^4.4.3"
+  }
+}
