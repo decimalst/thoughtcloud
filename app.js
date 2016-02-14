@@ -1,18 +1,20 @@
 // import the http package as an object.
 var http = require("http");
+var app = require('express')();
+var bodyParser = require('body-parser');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
-// making a new server from http.createServer{https://nodejs.org/api/http.html#http_http_createserver_requestlistener}
-// Docs on server object here: https://nodejs.org/api/http.html#http_class_http_server
-var server = http.createServer();
-var router = require("./router.js")(server);
-router.on('GET','/main',(req, resp) => {
-  resp.end("Main page");
-});
-router.on('GET','/dicks',(req,resp)=>{
-  resp.end("Dicks!");
-});
+app.get('/',function(req,res){
+  res.send('Hello')
+})
 
+app.post('/api/post',function(req,res,next){
+  console.log(req.body);
+  res.json(req.body);
+  res.end();
+})
 
 console.log("Server is listening on port 300...\nNavigate to localhost:300")
-server.listen(300);
+app.listen(300);
