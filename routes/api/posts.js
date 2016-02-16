@@ -14,7 +14,6 @@ var Post = require('../../models/posts.js');
 //Acutal routing below
 //get posts that match req.query.tags
 router.get('/posts',(req,res)=>{
-
   //find a query. The matched post will include
   // all tags defined in req.query.tags
   Post.find({tags:{$all:req.query.tags}},(err,post)=>{
@@ -49,6 +48,7 @@ router.get('/post/:id',(req, res)=>{
 
 //add tags to post by ID
 router.post('/post/:id',(req,res)=>{
+  console.log(req.body);
   Post.findByIdAndUpdate(req.params.id,
   {$push: {"tags": {$each:req.body.tags}}},//push tags to array
   {safe: true, new : true},

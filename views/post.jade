@@ -1,0 +1,18 @@
+html
+  head
+    title=post.title
+  body
+    h1=post.title
+    .content=post.body
+    .tags
+      each tag in post.tags
+        .tag= tag
+    form(
+      action='/public/'+post._id+"/tag"
+      method='post'
+    )
+      input(
+        name='tags',
+        value=tags
+      )
+      button= 'add tags'

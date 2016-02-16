@@ -9,21 +9,26 @@ var app = require('express')();
 //bodyParser is a middleware for processing POST requests
 var bodyParser = require('body-parser');
 //API is the control interface router
-var api = require("./routes/api/posts.js")
+var api = require("./routes/api/posts.js");
+var pub = require("./routes/pub/public.js");
 
 //requests will pass through bodyParser middleware first
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.set('view engine', 'jade');
+
 //Defines what happens at the homepage
 app.get('/',function(req,res){
   //for now we just write Hello into the body.
   //We can use some rendering engines to do cooler things
-  res.send('Hello')
+  res.render('home',{title: 'ffffff', message: 'home'})
 })
 
 //use our API router
 app.use('/api',api);
+
+app.use('/public',pub);
 
 console.log("Server is listening on port 300...\nNavigate to localhost:300")
 app.listen(300);

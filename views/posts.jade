@@ -1,0 +1,20 @@
+html
+  head
+    title='Search'
+  body
+    h1='Posts'
+    h2='Search'
+    form(
+      action='/public/search'
+      method='get'
+    )
+      input(
+        name='tags',
+        value=tags
+      )
+      button= 'go'
+    hr
+    each post in posts
+      .postLink
+        a(href="/public/"+post._id)= post.title
+          br
