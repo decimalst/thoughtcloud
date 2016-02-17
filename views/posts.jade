@@ -16,5 +16,6 @@ html
     hr
     each post in posts
       .postLink
-        a(href="/public/"+post._id)= post.title
-          br
+        a(href="/public/"+post.post._id)= post.post.title
+        span=" "+post.relevancy
+        br

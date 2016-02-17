@@ -34,7 +34,7 @@ router.post('/:id/tag',(req,res)=>{
   var tags = req.body.tags.split(",");
   request.post(url,{form:{tags:tags}},(err,resp,body)=>{
     if(!err&&resp.statusCode==200){
-      res.render('post',{post:JSON.parse(body)});
+      res.redirect('/public/'+req.params.id);
     }
     else{res.status(500).end(err)}
   })
