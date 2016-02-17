@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var postSchema = new Schema({
   title: String,
   body: String,
-  tags: {type: [String], index: true}
+  tags: {}
 });
 
 module.exports = mongoose.model('Post',postSchema);

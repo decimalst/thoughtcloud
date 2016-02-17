@@ -39,5 +39,18 @@ router.post('/:id/tag',(req,res)=>{
     else{res.status(500).end(err)}
   })
 })
+router.post('/post',(req,res)=>{
+  var url = 'http://localhost:300/api/post'
+  var tags= req.body.tags.split(",");
+  request.post(url,{form:{
+    title:req.body.title,
+    body:req.body.body,
+    tags:tags
+  }},(err,resp,body)=>{
+    if(!err&&resp.statusCode==200){
+      res.redirect('/public/'+JSON.parse(body))
+    }
+  })
+})
 
 module.exports = router;
