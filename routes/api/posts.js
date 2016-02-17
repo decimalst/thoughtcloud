@@ -18,39 +18,48 @@ router.get('/posts',(req,res)=>{
   // all tags defined in req.query.tags
   var query = {$or:[]}
   var tags= [].concat(req.query.tags);
-  tags.forEach((tag)=>{
+  tags.forEach((tag)=>{//convert tags array into a mongodb query.
     var obj = {}
     obj['tags.'+tag]={$gt:0};
     query.$or.push(obj);
   })
-  Post.find(query,(err,posts)=>{
+  Post.find(query,(err,posts)=>{//query= {$or:[{tags.*:{$gt:0}}]}
+  // query line means any post who has more than zero tags named tag.* where *
+  // is one of several tag names from the request. Each tag from request is pushed
+  // into the $or array, so each is tested.
     if(err) return res.status(404).end("no posts found");
 
     var relPosts = [];
 
-    for(var i=0;i<posts.length;i++){
-      var post = {post:posts[i], relevancy:0};
-      for(var j=0;j<tags.length;j++){
+    //Here's the relevancy checker
+    for(var i=0;i<posts.length;i++){//check all matched posts
+      var post = {post:posts[i], relevancy:0};//make new object
+      for(var j=0;j<tags.length;j++){//check all the search tags
         var total=0;
-        for(var t in post.post.tags){
+        for(var t in post.post.tags){//sum up total votes
           if(post.post.tags.hasOwnProperty(t))total+=post.post.tags[t];
         }
-        for(var t in post.post.tags){
-          if(t==tags[j]){
+        for(var t in post.post.tags){//compute relevancy for all tags
+          if(t==tags[j]){//only matched tags matter
+            //if relevancy already exists(one search term was already matched)
+            //then increment the relevancy by the next search term relevancy.
             if(post.relevancy>0)post.relevancy+=(post.post.tags[t]/total);
+
+            //otherwise, just set relevancy to the current weight of tag wrt total.
             else post.relevancy=(post.post.tags[t]/total);
           }
         }
       }
+      //add the computed posts to relPosts for export
       relPosts.push(post);
     }
-    console.log(relPosts);
-    relPosts.sort((a,b)=>{
+
+    relPosts.sort((a,b)=>{//sort relPosts by most relevant first
       if(a.relevancy>b.relevancy)return -1;
       if(a.relevancy<b.relevancy)return 1;
       return 0;
     })
-    res.json(relPosts);
+    res.json(relPosts);//Ship it!
     res.status(200).end("OK");
   })
 })
@@ -58,8 +67,9 @@ router.get('/posts',(req,res)=>{
 //make a new post
 router.post('/post',(req,res,next)=>{
   var tags = {};
-  req.body.tags.forEach((tag)=>{
-    tags[tag]=1;
+  req.body.tags.forEach((tag)=>{//make tags into an object for saving into db
+    tags[tag]=1;//tags = {tag1:1,tag2:1,...}
+    //when posts are first created the tags can't be added more than once.
   });
   // Here we will write to the database.
   Post.create({ //make a new Post from the req.body
@@ -75,7 +85,7 @@ router.post('/post',(req,res,next)=>{
 
 //find post by ID
 router.get('/post/:id',(req, res)=>{
-  Post.findById(req.params.id,(err,post)=>{
+  Post.findById(req.params.id,(err,post)=>{//get the post by the id from the url
     if(err) return res.status(404).end("post not found");
     res.json(post);//send entire post back
     res.status(200).end("OK");
@@ -87,12 +97,12 @@ router.post('/post/:id',(req,res)=>{
   Post.findOne({_id:req.params.id},
   (err,post)=>{
     if(err) return res.status(404).end("post not found"+err);
-    req.body.tags.forEach((tag)=>{
-      if(!post.tags[tag])post.tags[tag]=1;
-      else post.tags[tag]++;
+    req.body.tags.forEach((tag)=>{//for each tag
+      if(!post.tags[tag])post.tags[tag]=1;//create if doesn't exist
+      else post.tags[tag]++;//increment if it does exist
     })
-    post.markModified('tags');
-    post.save((err)=>{
+    post.markModified('tags');//since tags is a multitype, we have to mark it for update
+    post.save((err)=>{//save new post.
       if(err) {console.log(err); return res.status(500).end(err);}
       res.json(post);//give updated post back
       res.status(200).end("OK");
