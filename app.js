@@ -31,4 +31,4 @@ app.use('/api',api);
 app.use('/public',pub);
 
 console.log("Server is listening on port 300...\nNavigate to localhost:300")
-app.listen(300);
+app.listen(process.env.PORT||300);

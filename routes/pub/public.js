@@ -11,7 +11,7 @@ router.get("/",(req, res)=>{
 //search request handler
 router.get("/search",(req,res)=>{
   var tags = req.query.tags.split(',');
-  var url = 'http://localhost:300/api/posts?';
+  var url = 'http://localhost:'+process.env.PORT+'/api/posts?';
   tags.forEach((val)=>{
     url+=('&tags='+val);//construct the unique query string for the API to parse
   })
@@ -27,7 +27,7 @@ router.get("/search",(req,res)=>{
 
 //get a specific post
 router.get('/:id',(req,res)=>{
-  var url = 'http://localhost:300/api/post/'+req.params.id;//construct api request
+  var url = 'http://localhost:'+process.env.PORT+'/api/post/'+req.params.id;//construct api request
   request.get(url,(err,resp,body)=>{//send api request
     if(!err&&resp.statusCode==200){
       //render post
@@ -38,7 +38,7 @@ router.get('/:id',(req,res)=>{
 });
 //add tags to post
 router.post('/:id/tag',(req,res)=>{
-  var url = 'http://localhost:300/api/post/'+req.params.id;//construct api route
+  var url = 'http://localhost:'+process.env.PORT+'/api/post/'+req.params.id;//construct api route
   var tags = req.body.tags.split(",");//construct tags array
   request.post(url,{form:{tags:tags}},(err,resp,body)=>{//fire api request
     if(!err&&resp.statusCode==200){//if successful
@@ -48,7 +48,7 @@ router.post('/:id/tag',(req,res)=>{
   })
 })
 router.post('/post',(req,res)=>{
-  var url = 'http://localhost:300/api/post'//where to send request
+  var url = 'http://localhost:'+process.env.PORT+'/api/post'//where to send request
   var tags= req.body.tags.split(",");//get tags into an array
   request.post(url,{form:{//construct post form
     title:req.body.title,
