@@ -10,6 +10,11 @@ mongoose.connect("localhost","thoughts");
 // mongoose document objects,
 var Post = require('../../models/posts.js');
 
+router.all('/*',(req,res,next)=>{
+  console.log(req.hostname);
+  if(req.hostname!="localhost")res.status(500).end("err");
+  else next();
+})
 
 //Acutal routing below
 //get posts that match req.query.tags

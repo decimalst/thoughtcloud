@@ -17,11 +17,13 @@ router.get("/search",(req,res)=>{
   })
   request.get(url,//get posts from API
   (err,resp,body)=>{
-    if(!err&&resp.statusCode==200){
+    if(!err&&(resp.statusCode==200)||(resp.statusCode==404)){
+      body = body?body:"{}";
       //if we got the posts successfully, print them out. pass tags too
       res.render('posts',{tags:req.query.tags,posts:JSON.parse(body)});
     }
-    else{res.status(500).end(err)}
+    else{
+      res.status(500).end(err)}
   })
 });
 
