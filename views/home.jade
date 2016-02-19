@@ -1,36 +1,38 @@
 html
+  link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7", crossorigin="anonymous")
   head
     title= title
   body
-    h1='Post'
-    form(
-      action='/public/post'
-      method='post'
-    )
-      input(
-        name='title'
-        placeholder='title'
-      )
-      br
-      textarea(
-        name='body'
-        placeholder='Write post here...'
-        rows=10
-        cols=40
-      )
-      br
-      input(
-        placeholder='tags, tags, tags'
-        name='tags'
-      )
-      button= 'Submit'
-    hr
-    h1= 'Search'
-    form(
-      action='/public/search'
-      method='get'
-    )
-      input(
-        name='tags'
-      )
-      button= 'Go'
+    .navbar.navbar-default.navbar-fixed-top
+      .container-fluid
+        .navbar-header
+        button(
+          type="button"
+          class="navbar-toggle collapsed"
+          data-toggle="collapse"
+          data-target="#"
+          aria-expanded="false"
+        )
+        a.navbar-brand(
+          href="#"
+        )="Thoughtcloud"
+        ul.nav.navbar-nav
+          li
+            a(
+              href="#posting"
+              )="Post"
+          li
+            a(
+              href="#"
+              )="About"
+          form.navbar-form.navbar-left(
+            role="search"
+            action="/public/search"
+            method="get"
+            )
+            input(
+              name="tags"
+              type="text"
+              class="form-control"
+              placeholder="search tags"
+              )
