@@ -8,7 +8,7 @@ html
     hr
     .tags='Tags:'
       each count, tag in post.tags
-        .tag= tag
+        span.tag= " "+tag+","
     form(
       action='/public/'+post._id+"/tag"
       method='post'

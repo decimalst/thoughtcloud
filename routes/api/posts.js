@@ -11,7 +11,6 @@ mongoose.connect("localhost","thoughts");
 var Post = require('../../models/posts.js');
 
 router.all('/*',(req,res,next)=>{
-  console.log(req.hostname);
   if(req.hostname!="localhost")res.status(500).end("err");
   else next();
 })
@@ -24,8 +23,8 @@ router.get('/posts',(req,res)=>{
   var query = {$or:[]}
   var tags= [].concat(req.query.tags);
   tags.forEach((tag)=>{//convert tags array into a mongodb query.
-    var obj = {}
-    obj['tags.'+tag]={$gt:0};
+    var obj = {};
+    obj['tags.'+tag+".count"]={$gt:0};
     query.$or.push(obj);
   })
   Post.find(query,(err,posts)=>{//query= {$or:[{tags.*:{$gt:0}}]}
@@ -42,16 +41,16 @@ router.get('/posts',(req,res)=>{
       for(var j=0;j<tags.length;j++){//check all the search tags
         var total=0;
         for(var t in post.post.tags){//sum up total votes
-          if(post.post.tags.hasOwnProperty(t))total+=post.post.tags[t];
+          if(post.post.tags.hasOwnProperty(t))total+=post.post.tags[t].count;
         }
         for(var t in post.post.tags){//compute relevancy for all tags
           if(t==tags[j]){//only matched tags matter
             //if relevancy already exists(one search term was already matched)
             //then increment the relevancy by the next search term relevancy.
-            if(post.relevancy>0)post.relevancy+=(post.post.tags[t]/total);
+            if(post.relevancy>0)post.relevancy+=(post.post.tags[t].count/total);
 
             //otherwise, just set relevancy to the current weight of tag wrt total.
-            else post.relevancy=(post.post.tags[t]/total);
+            else post.relevancy=(post.post.tags[t].count/total);
           }
         }
       }
@@ -73,7 +72,7 @@ router.get('/posts',(req,res)=>{
 router.post('/post',(req,res,next)=>{
   var tags = {};
   req.body.tags.forEach((tag)=>{//make tags into an object for saving into db
-    tags[tag]=1;//tags = {tag1:1,tag2:1,...}
+    tags[tag]={count:1,ips:[req.body.ip]};
     //when posts are first created the tags can't be added more than once.
   });
   // Here we will write to the database.
@@ -102,9 +101,16 @@ router.post('/post/:id',(req,res)=>{
   Post.findOne({_id:req.params.id},
   (err,post)=>{
     if(err) return res.status(404).end("post not found"+err);
+    if(!req.body.tags)req.body.tags=[];
     req.body.tags.forEach((tag)=>{//for each tag
-      if(!post.tags[tag])post.tags[tag]=1;//create if doesn't exist
-      else post.tags[tag]++;//increment if it does exist
+      if(!post.tags[tag]){
+        post.tags[tag] = {count:1,ips:[req.body.ip]}
+      }
+      else{
+        if(post.tags[tag].ips.indexOf(req.body.ip)!=-1)return;
+        post.tags[tag].count++;//increment if it does exist
+        post.tags[tag].ips.push(req.body.ip);
+      }
     })
     post.markModified('tags');//since tags is a multitype, we have to mark it for update
     post.save((err)=>{//save new post.

@@ -41,21 +41,31 @@ router.get('/:id',(req,res)=>{
 //add tags to post
 router.post('/:id/tag',(req,res)=>{
   var url = 'http://localhost:'+process.env.PORT+'/api/post/'+req.params.id;//construct api route
-  var tags = req.body.tags.split(",");//construct tags array
-  request.post(url,{form:{tags:tags}},(err,resp,body)=>{//fire api request
+  var multiSetTags = req.body.tags.split(",");//construct tags array
+  var tags = [];
+  multiSetTags.forEach((item)=>{
+    item = item.trim();
+    if(tags.indexOf(item)<0)tags.push(item);
+  });
+  request.post(url,{form:{tags:tags,ip:req.ip}},(err,resp,body)=>{//fire api request
+    console.log('added',tags);
     if(!err&&resp.statusCode==200){//if successful
       res.redirect('/public/'+req.params.id);//reload page
     }
-    else{res.status(500).end(err)}
+    else{
+      console.log(err);
+      res.status(500).end()}
   })
 })
+//create new toast
 router.post('/post',(req,res)=>{
   var url = 'http://localhost:'+process.env.PORT+'/api/post'//where to send request
   var tags= req.body.tags.split(",");//get tags into an array
   request.post(url,{form:{//construct post form
     title:req.body.title,
     body:req.body.body,
-    tags:tags
+    tags:tags,
+    ip:req.ip
   }},(err,resp,body)=>{
     if(!err&&resp.statusCode==200){
       res.redirect('/public/'+JSON.parse(body))//go to new post
