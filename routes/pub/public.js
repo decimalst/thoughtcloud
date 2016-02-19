@@ -44,7 +44,7 @@ router.post('/:id/tag',(req,res)=>{
   var multiSetTags = req.body.tags.split(",");//construct tags array
   var tags = [];
   multiSetTags.forEach((item)=>{
-    item = item.trim();
+    item = item.trim().replace(/\W/g, '');
     if(tags.indexOf(item)<0)tags.push(item);
   });
   request.post(url,{form:{tags:tags,ip:req.ip}},(err,resp,body)=>{//fire api request
@@ -60,7 +60,12 @@ router.post('/:id/tag',(req,res)=>{
 //create new toast
 router.post('/post',(req,res)=>{
   var url = 'http://localhost:'+process.env.PORT+'/api/post'//where to send request
-  var tags= req.body.tags.split(",");//get tags into an array
+  var multiSetTags= req.body.tags.split(",");//get tags into an array
+  var tags = [];
+  multiSetTags.forEach((item)=>{
+    item = item.trim().replace(/\W/g, '');
+    if(tags.indexOf(item)<0)tags.push(item);
+  })
   request.post(url,{form:{//construct post form
     title:req.body.title,
     body:req.body.body,
