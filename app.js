@@ -17,6 +17,7 @@ var pub = require("./routes/pub/public.js");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser('dudeffflmao'));
+app.use(require('express').static('public'));
 
 app.set('view engine', 'jade');
 
