@@ -5,7 +5,12 @@ var querystring = require('querystring');
 
 // Handler for url/public/ endpoint
 router.get("/",(req, res)=>{
-  res.render("search");
+  res.render("home");
+});
+
+// Handler for url/public/ endpoint
+router.get("/searching",(req, res)=>{
+  res.render("search",{title: 'fffff', message: 'searching'});
 });
 
 //search request handler

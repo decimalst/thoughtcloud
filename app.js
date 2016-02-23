@@ -25,7 +25,22 @@ app.set('view engine', 'jade');
 app.get('/',function(req,res){
   //for now we just write Hello into the body.
   //We can use some rendering engines to do cooler things
-  res.render('home',{title: 'ffffff', message: 'home'})
+  res.render('home',{title: 'fffff', message: 'home'})
+})
+
+app.get('/searching',function(req,res){
+  //Show searching page
+  res.render('search',{title: 'fffff', message: 'search'})
+})
+
+app.get('/posting',function(req,res){
+  //Show searching page
+  res.render('posting',{title: 'fffff', message: 'post'})
+})
+
+app.get('/contact',function(req,res){
+  //Show searching page
+  res.render('contact',{title: 'fffff', message: 'post'})
 })
 
 //use our API router
