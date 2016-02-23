@@ -1,36 +1,11 @@
-html
-  head
-    title= title
-  body
-    h1='Post'
-    form(
-      action='/public/post'
-      method='post'
-    )
-      input(
-        name='title'
-        placeholder='title'
-      )
-      br
-      textarea(
-        name='body'
-        placeholder='Write post here...'
-        rows=10
-        cols=40
-      )
-      br
-      input(
-        placeholder='tags, tags, tags'
-        name='tags'
-      )
-      button= 'Submit'
-    hr
-    h1= 'Search'
-    form(
-      action='/public/search'
-      method='get'
-    )
-      input(
-        name='tags'
-      )
-      button= 'Go'
+extends includes/header.jade
+
+block title
+  title Home
+
+block content
+  .container
+    .jumbotron
+      h1 ThotCloud
+      h2 lmao
+      p Yo suck my shit up fam we gon harrrrrddd. Bootstrap for the fukcing win m8
