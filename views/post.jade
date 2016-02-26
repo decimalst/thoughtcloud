@@ -1,8 +1,6 @@
-extendes include/header.jade
-html
-  head
-    title=post.title
-  body
+extends includes/header.jade
+block content
+  .container
     a(href='/')='home'
     h1=post.title
     .content=post.body
