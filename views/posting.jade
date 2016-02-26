@@ -1,24 +1,28 @@
 extends includes/header.jade
 block title
   title Post
-html
-  head
-    title='Search'
-  body
-    h1='Posts'
-    h2='Search'
+block content
+  .container
+    h1 Post
     form(
-      action='/public/search'
-      method='get'
+      action='/public/post'
+      method='post'
     )
       input(
-        name='tags',
-        value=tags
+        name='title'
+        placeholder='title'
       )
-      button= 'go'
+      br
+      textarea(
+        name='body'
+        placeholder='Write post here...'
+        rows=10
+        cols=40
+      )
+      br
+      input(
+        placeholder='tags, tags, tags'
+        name='tags'
+      )
+      button= 'Submit'
     hr
-    each post in posts
-      .postLink
-        a(href="/public/"+post.post._id)= post.post.title
-        span=" "+post.relevancy
-        br
