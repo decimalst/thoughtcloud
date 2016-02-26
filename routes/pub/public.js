@@ -49,7 +49,7 @@ router.post('/:id/tag',(req,res)=>{
   var multiSetTags = req.body.tags.split(",");//construct tags array
   var tags = [];
   multiSetTags.forEach((item)=>{
-    item = item.trim().replace(/\W/g, '');
+    item = item.trim();
     if(tags.indexOf(item)<0)tags.push(item);
   });
   request.post(url,{form:{tags:tags,ip:req.ip}},(err,resp,body)=>{//fire api request
