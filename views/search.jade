@@ -1,14 +1,14 @@
 extends includes/header.jade
-html
-  head
-    title= 'Search'
-  body
-    h1= 'Search'
-    form(
-      action='/public/search'
-      method='get'
-    )
-      input(
-        name='tags'
+
+block content
+  .container
+    .jumbotron
+      h1 Search
+      form(
+        action='/public/search'
+        method='get'
       )
-      button= 'Go'
+        input(
+          name='tags'
+        )
+        button= 'Go'
