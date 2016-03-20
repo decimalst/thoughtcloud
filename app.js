@@ -25,7 +25,9 @@ app.set('view engine', 'jade');
 app.get('/',function(req,res){
   //for now we just write Hello into the body.
   //We can use some rendering engines to do cooler things
-  res.render('home',{title: 'fffff', message: 'home'})
+  // res.render('home',{title: 'fffff', message: 'home'})
+  res.redirect('/public'); //screw this, handle it only in the public router
+
 })
 
 app.get('/searching',function(req,res){

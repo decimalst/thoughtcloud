@@ -7,4 +7,9 @@ block content
   .container
     .jumbotron
       h1 ThoughtCloud
-      h2 lmao
+      h2 Test
+      each post in posts
+        .postLink
+          a(href="/public/"+post.post._id)= post.post.title
+          span=" "+post.relevancy
+          br

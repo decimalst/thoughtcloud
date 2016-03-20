@@ -5,7 +5,20 @@ var querystring = require('querystring');
 
 // Handler for url/public/ endpoint
 router.get("/",(req, res)=>{
-  res.render("home");
+  // tags=test below is what sets the default tag search param
+  var url = 'http://localhost:'+process.env.PORT+'/api/posts?tags=test';
+  //All this stuff is to handle the default tag search. for now it is Test
+  request.get(url,//get posts from API
+  (err,resp,body)=>{
+    if(!err&&(resp.statusCode==200)||(resp.statusCode==404)){
+      body = body?body:"{}";
+      //if we got the posts successfully, print them out. pass tags too
+      res.render('home',{posts:JSON.parse(body)});
+    }
+    else{
+      res.status(500).end(err)}
+  })
+  //res.render("home",{});
 });
 
 // Handler for url/public/ endpoint
