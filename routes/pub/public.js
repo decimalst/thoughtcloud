@@ -15,6 +15,7 @@ router.get("/",(req, res)=>{
       body = body?body:"{}";
       for(post in body){
         post.relevancy = Math.round(post.relevancy);
+        console.log(post.relevancy);
       }
       //if we got the posts successfully, print them out. pass tags too
       res.render('home',{posts:JSON.parse(body)});
