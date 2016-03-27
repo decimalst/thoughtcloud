@@ -11,8 +11,9 @@ mongoose.connect("localhost","thoughts");
 var Post = require('../../models/posts.js');
 
 router.all('/*',(req,res,next)=>{
-  if(req.hostname!="localhost")res.status(500).end("err");
-  else next();
+  //if(req.hostname!="localhost")res.status(500).end("err");
+  //else
+  next();
 })
 
 //Acutal routing below
