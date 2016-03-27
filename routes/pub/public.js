@@ -10,8 +10,12 @@ router.get("/",(req, res)=>{
   //All this stuff is to handle the default tag search. for now it is Test
   request.get(url,//get posts from API
   (err,resp,body)=>{
+    if(!body)err="No body!";
     if(!err&&(resp.statusCode==200)||(resp.statusCode==404)){
       body = body?body:"{}";
+      for(post in body){
+        post.relevancy = Math.round(post.relevancy);
+      }
       //if we got the posts successfully, print them out. pass tags too
       res.render('home',{posts:JSON.parse(body)});
     }
