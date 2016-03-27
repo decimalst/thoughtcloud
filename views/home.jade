@@ -11,5 +11,5 @@ block content
       each post in posts
         .postLink
           a(href="/public/"+post.post._id)= post.post.title
-          span=" "+post.relevancy
+          span=" "+post.relevancy+"%"
           br

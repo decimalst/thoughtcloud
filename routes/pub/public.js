@@ -12,13 +12,13 @@ router.get("/",(req, res)=>{
   (err,resp,body)=>{
     if(!body)err="No body!";
     if(!err&&(resp.statusCode==200)||(resp.statusCode==404)){
-      body = body?body:"{}";
-      for(post in body){
-        post.relevancy = Math.round(post.relevancy);
-        console.log(post.relevancy);
+      body = body?JSON.parse(body):"{}";
+      for(var post in body){
+        post = body[post];
+	post.relevancy = Math.round(post.relevancy);
       }
       //if we got the posts successfully, print them out. pass tags too
-      res.render('home',{posts:JSON.parse(body)});
+      res.render('home',{posts:body});
     }
     else{
       res.status(500).end(err)}
