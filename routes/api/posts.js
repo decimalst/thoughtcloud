@@ -55,6 +55,7 @@ router.get('/posts',(req,res)=>{
           }
         }
       }
+      post.relevancy*=100;
       //add the computed posts to relPosts for export
       relPosts.push(post);
     }
