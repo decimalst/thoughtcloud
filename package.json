@@ -21,7 +21,7 @@
     "cookie-parser": "^1.4.1",
     "express": "^4.13.4",
     "jade": "^1.11.0",
-    "mongoose": "^4.4.3",
+    "mongoose": "^5.9.0",
     "request": "^2.69.0"
   }
 }
